@@ -11,6 +11,9 @@ export class MongooseRWConfigService implements MongooseOptionsFactory {
   createMongooseOptions(): MongooseModuleOptions {
     return {
       uri: "mongodb://127.0.0.1:27017/univesity-student-db",
+      user:"root",
+      pass:"Qj!7GAvKokw@",
+
       //poolSize: 2,
       // logger: this.configService.get('database.logging'),
       connectionFactory: (connection) => {
