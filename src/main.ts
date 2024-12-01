@@ -9,6 +9,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe())
   app.setGlobalPrefix("/university-student")
   app.use(httpContext.middleware);
-  await app.listen(3000);
+  const port = process.env.PORT || 3000
+  console.log(`Using port ${port}`)
+  await app.listen(port);
 }
 bootstrap();
