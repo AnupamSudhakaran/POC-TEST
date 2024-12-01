@@ -11,7 +11,7 @@ export class MongooseRWConfigService implements MongooseOptionsFactory {
   createMongooseOptions(): MongooseModuleOptions {
     return {
       //mongodb://<username>:<password>@localhost:27017/yourDatabase?authSource=admin
-      uri: "mongodb://root:Qj!7GAvKokw@@127.0.0.1:27017/univesity-student-db?authSource=admin",
+      uri: "mongodb://Anupam:Anupam@127.0.0.1:27017/univesity-student-db?authSource=admin",
       //poolSize: 2,
       // logger: this.configService.get('database.logging'),
       connectionFactory: (connection) => {

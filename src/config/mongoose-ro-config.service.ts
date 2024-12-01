@@ -11,7 +11,7 @@ export class MongooseROConfigService implements MongooseOptionsFactory {
   createMongooseOptions(): MongooseModuleOptions {
     return {
       // uri: "mongodb://127.0.0.1:27017/univesity-student-db",
-      uri:"mongodb://root:Qj!7GAvKokw@@127.0.0.1:27017/univesity-student-db?authSource=admin",
+      uri:"mongodb://Anupam:Anupam@127.0.0.1:27017/univesity-student-db?authSource=admin",
       readPreference: 'secondaryPreferred',
       // user:"root",
       // pass:"Qj!7GAvKokw@",
