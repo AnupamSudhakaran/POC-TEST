@@ -74,12 +74,15 @@ export class EventsService {
     async getEventsService(userId,skip,limit){
         try{
             const custProfile =await this.databaseService.getCustProfileUsingId(userId);
+            if(!custProfile){
+                throw new BadRequestException("User has not been registered");
+            }
             if(custProfile?.role === ROLES.PROFESSOR){
                 const events =  await  this.getEventsForProffesor(userId,skip,limit);
                 return {events};
             }
             else{
-                const events =  this.getEventsForAttendees(userId,skip,limit);
+                const events =  await this.getEventsForAttendees(custProfile?.org,skip,limit);
                 return {events};
             }
         }catch(err){
@@ -147,15 +150,15 @@ export class EventsService {
 
     }
 
-    private async getEventsForAttendees(userId:Number, skip:Number, limit: Number){
+    private async getEventsForAttendees(org:String, skip:Number, limit: Number){
         try{
-            const eventMapps =await this.databaseService.getStudentEventMappings(userId,skip,limit);
-            console.log(eventMapps);
-            const eventIds = eventMapps.map((event)=>{
-                return event?.eventId;
-            })
-            console.log("df",eventIds);
-            return await this.databaseService.getEventsForStudents(skip,limit);
+            // const eventMapps =await this.databaseService.getStudentEventMappings(userId,skip,limit);
+            // console.log(eventMapps);
+            // const eventIds = eventMapps.map((event)=>{
+            //     return event?.eventId;
+            // })
+            // console.log("df",eventIds);
+            return await this.databaseService.getEventsForStudents(org,skip,limit);
             // const events
         }catch(error){
             throw error;

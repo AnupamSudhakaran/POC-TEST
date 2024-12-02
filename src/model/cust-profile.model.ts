@@ -16,7 +16,7 @@ export class CustProfile{
     @Prop({required: true})
     passwordHash: String
     
-    @Prop({required: true, index:true})
+    @Prop({required: true, index:true, unique:true})
     email: String
 
     @Prop({required: true, enum: ROLES})

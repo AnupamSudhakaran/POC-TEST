@@ -184,11 +184,11 @@ export class DatabaseService {
         }
     }
 
-    async getEventsForStudents(skip,limit){
+    async getEventsForStudents(org,skip,limit){
         try{
-            const model = this.roConnection.model("event");
+            const model = this.roConnection.model("events");
             const currTime  = Date.now()
-            const events = await model.find({fromDateTime:{$lte:currTime}})
+            const events = await model.find({org:org,fromDateTime:{$lte:currTime}})
             .sort({fromDateTime:1})
             .skip(skip)
             .limit(limit)
