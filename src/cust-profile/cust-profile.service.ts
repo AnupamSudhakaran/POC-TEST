@@ -8,6 +8,7 @@ import { ResetPasswordDTO } from 'src/common/dto/reset-password.dto';
 import { ServiceReviewDto } from 'src/common/dto/service-review.dto';
 import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
 import { ROLES } from 'src/model/cust-profile.model';
+import { create } from 'domain';
 const httpContext = require("express-http-context");
 
 @Injectable()
@@ -45,14 +46,18 @@ export class CustProfileService {
     async createUser(createUserDto: CreateUserDto){
         const constPassword = "pass1234"
         const passwordHash = hashSHA(constPassword,SHA256_KEY)
- 
         const dbPayload = {
             _id: randomId(),
             passwordHash,
             email: createUserDto?.email,
             role: createUserDto?.role,
             org: createUserDto?.org,
-            name: createUserDto?.name
+            name: createUserDto?.name,
+            contactNo: createUserDto?.contactNo,
+            introduction: createUserDto?.introduction,
+            companiesPositions: createUserDto?.companiesPositions,
+            techExpertise: createUserDto?.techExpertise,
+            projects: createUserDto?.projects
         }
         await this.databaseService.createCustProfile(dbPayload);
         return {
