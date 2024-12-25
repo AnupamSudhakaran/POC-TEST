@@ -66,7 +66,7 @@ export class DatabaseService {
 
     async createCustProfile(dbPayload: any){
         try{
-            console.log(`[createCustProfile] trying to create customer Profile using payload :: ${dbPayload}`)
+            console.log(`[createCustProfile] trying to create customer Profile using payload :: ${JSON.stringify(dbPayload)}`)
             const model = this.rwConnection.model("custProfile")
             const custProfile = await model.create(dbPayload)
             return custProfile ;

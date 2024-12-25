@@ -57,7 +57,8 @@ export class CustProfileService {
             introduction: createUserDto?.introduction,
             companiesPositions: createUserDto?.companiesPositions,
             techExpertise: createUserDto?.techExpertise,
-            projects: createUserDto?.projects
+            projects: createUserDto?.projects,
+            metaData: createUserDto?.metaData
         }
         await this.databaseService.createCustProfile(dbPayload);
         return {

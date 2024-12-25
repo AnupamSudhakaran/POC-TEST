@@ -34,4 +34,7 @@ export class CreateUserDto{
     @IsArray()
     @IsOptional()
     projects: String[]
+
+    @IsOptional()
+    metaData: any
 }

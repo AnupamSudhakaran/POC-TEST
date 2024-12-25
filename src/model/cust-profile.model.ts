@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose from "mongoose";
 
 export enum ROLES {
     STUDENT="STUDENT",
@@ -50,7 +51,10 @@ export class CustProfile{
     projects: String[]
 
     @Prop({required: false})
-    lastLoggedInAt: Date;l
+    lastLoggedInAt: Date;
+
+    @Prop({required: false, type:{}})
+    metaData: any
 }
 
 export type CustProfileDocument =  CustProfile & Document
