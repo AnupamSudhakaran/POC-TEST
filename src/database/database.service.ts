@@ -279,5 +279,18 @@ export class DatabaseService {
         }
     }
 
+    async getUsersFromRole(role: ROLES,skip,limit){
+        try {
+            const model  = this.roConnection.model("custProfile");
+            const  users = await model.find({role})
+            .sort({lastLoggedInAt:-1})
+            .skip(skip)
+            .limit(limit);
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     
 }

@@ -6,6 +6,7 @@ import {  ResetPasswordDTO } from 'src/common/dto/reset-password.dto';
 import { AuthGuard } from 'src/auth/strict.gaurd';
 import { ServiceReviewDto } from 'src/common/dto/service-review.dto';
 import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
+import { ROLES } from 'src/model/cust-profile.model';
 
 const httpcontext = require("express-http-context");
 
@@ -56,11 +57,27 @@ export class CustProfileController {
     async getPresenters(@Query()params){
         const skip = params?.skip;
         const limit = params?.limit;
-
         if(!skip || !limit){
             return new  BadRequestException("Params not found [limit,skip]");
         }
         return await this.custProfileService.getPresentersService(skip, limit);
     }
 
+    @UseGuards(AuthGuard)
+    @Get("v1/users")
+    async getUsers(@Query()params){
+        const skip = params?.skip;
+        const limit = params?.limit;
+        const role = params?.role;
+        if(!skip || !limit || !role){
+            return new  BadRequestException("Params not found [limit,skip,role]");
+        }
+        if(Object.keys(ROLES).includes(role)){
+            return await this.custProfileService.getUserWithRoleService(role,skip,limit);
+        }
+        else{
+            throw new BadRequestException("Role is Wrong")
+        }
+
+    }
 }

@@ -122,4 +122,13 @@ export class CustProfileService {
         }
     }
 
+    async getUserWithRoleService(role: ROLES,skip:Number,limit: Number){
+        try {
+            const users = await this.databaseService.getUsersFromRole(role,skip,limit);
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
