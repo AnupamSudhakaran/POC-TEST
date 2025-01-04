@@ -26,6 +26,7 @@ export class EventsService {
                 fromDateTime: addEventDto.fromDateTime,
                 toDateTime: addEventDto?.toDateTime,
                 place:addEventDto.place,
+                eventName: addEventDto.eventName,
                 org:custProfile?.org,
                 attendees: 0              
             }

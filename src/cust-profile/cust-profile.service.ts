@@ -46,7 +46,7 @@ export class CustProfileService {
     async createUser(createUserDto: CreateUserDto){
         const constPassword = "pass1234"
         const passwordHash = hashSHA(constPassword,SHA256_KEY)
-        const dbPayload = {
+        var dbPayload = {
             _id: randomId(),
             passwordHash,
             email: createUserDto?.email,
@@ -59,6 +59,12 @@ export class CustProfileService {
             techExpertise: createUserDto?.techExpertise,
             projects: createUserDto?.projects,
             metaData: createUserDto?.metaData
+        }
+        if(createUserDto?.segment){
+            dbPayload["segment"] = createUserDto?.segment
+        }
+        if(createUserDto?.industry){
+            dbPayload["industry"] = createUserDto?.industry
         }
         await this.databaseService.createCustProfile(dbPayload);
         return {

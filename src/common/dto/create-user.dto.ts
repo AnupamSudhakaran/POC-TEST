@@ -23,6 +23,12 @@ export class CreateUserDto{
     @IsOptional()
     introduction: String;
 
+    @IsOptional()
+    industry: String;
+
+    @IsOptional()
+    segment: String;
+
     @IsArray()
     @IsOptional()
     companiesPositions: String[]
@@ -37,4 +43,6 @@ export class CreateUserDto{
 
     @IsOptional()
     metaData: any
+
+
 }

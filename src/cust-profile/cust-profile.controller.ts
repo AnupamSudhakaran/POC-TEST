@@ -52,7 +52,6 @@ export class CustProfileController {
         return this.custProfileService.updateProfileService(userId,updatProfileReq );
     }
 
-    @UseGuards(AuthGuard)
     @Get("v1/presentrs")
     async getPresenters(@Query()params){
         const skip = params?.skip;

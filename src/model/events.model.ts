@@ -6,6 +6,9 @@ export class Events {
     @Prop({ required: true })
     _id: String;
 
+    @Prop({required: true})
+    eventName: String;
+    
     @Prop({ required: true })
     presenterId: String;
 
