@@ -21,7 +21,12 @@ export class CustProfileController {
 
     @Post("v1/user")
     async createUser(@Body() createUserDto: CreateUserDto){
-        return this.custProfileService.createUser(createUserDto);
+        try{
+
+            return this.custProfileService.createUser(createUserDto);
+        }catch(err){
+            throw err;
+        }
     }
      
     @UseGuards(AuthGuard)

@@ -178,7 +178,7 @@ export class DatabaseService {
                             .skip(skip)
                             .limit(limit)
             
-            return event;
+            return events;
         }catch(err){
             throw err;
         }
