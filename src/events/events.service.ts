@@ -115,10 +115,12 @@ export class EventsService {
             const filter = {_id:eventId}
             const [event, addattendee] = await Promise.all([this.databaseService.getEventsFromDB(filter), 
                 this.databaseService.addAttendeeToEvent(eventId)]); 
-
-            const eventMapping = await this.databaseService.createEventattendeeMapping(eventId, userId, event?.expiry);
+            if(!event){
+                throw new BadRequestException("Event not valid")
+            }
+            const eventMapping = await this.databaseService.createEventattendeeMapping(eventId, userId, event?.toDateTime);
         }catch(err){
-            throw new err;
+            throw err;
         }
     }
 
@@ -132,6 +134,19 @@ export class EventsService {
             
         }catch(err){
             throw err;
+        }
+    }
+
+    async getEventsToAttend(userId: string){
+        try {
+            const events = await this.databaseService.getEventsForAttendee(userId);
+            const eventArray = events.map((eve)=>{
+                return eve?.eventId;
+            });
+            const eventDetails = await this.databaseService.getEventDataFromEventsArray(eventArray);
+            return eventDetails;
+        } catch (error) {
+            throw error;
         }
     }
 

@@ -43,7 +43,7 @@ export class DatabaseService {
     async updateCustProfile(filter:any, updateBody: any){
         try{
             const model =this.rwConnection.model("custProfile"); 
-            const custProfile = await model.updateOne(filter, {$set:updateBody});
+            const custProfile = await model.findOneAndUpdate(filter, { $set: updateBody }, { new: true });
             return custProfile;
         }catch(err){
             console.log(`[updateCustProfile] got some error :: ${JSON.stringify(err)}`);
@@ -214,7 +214,7 @@ export class DatabaseService {
     async createEventattendeeMapping(eventId,userId,expiry){
         try{
             const model = this.rwConnection.model("attendee_event_mapping");
-            const result  = await model.updateOne({eventId,userId}, {$set:{eventId,userId,expiry},upsert:true});
+            const result  = await model.updateOne({eventId,atendeeId:userId}, {$set:{eventId,atendeeId:userId,expiry}},{upsert:true});
         }catch(err){
             throw err;
         }
@@ -223,7 +223,7 @@ export class DatabaseService {
     async deleteEventAttendeeMapping(eventId,userId){
         try{
             const model = this.rwConnection.model("attendee_event_mapping");
-            const result = await model.deleteOne({eventId,userId});
+            const result = await model.deleteOne({eventId,atendeeId:userId});
         }catch(err){
             throw err;
         }
@@ -233,6 +233,16 @@ export class DatabaseService {
         try{
             const model = this.rwConnection.model("attendee_event_mapping");
             const result  = await model.findOne({eventId,userId});
+            return result;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    async getEventsForAttendee(userId){
+        try{
+            const model = this.rwConnection.model("attendee_event_mapping");
+            const result  = await model.find({atendeeId:userId});
             return result;
         }catch(err){
             throw err;
@@ -289,6 +299,16 @@ export class DatabaseService {
             return users;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async getEventDataFromEventsArray(events:string[]){
+        try{
+            const model = this.rwConnection.model("events");
+            const result  = await model.find({_id:{$in:events}});
+            return result;
+        }catch(err){
+            throw err;
         }
     }
 

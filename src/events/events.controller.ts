@@ -69,6 +69,9 @@ export class EventsController {
     @Post("v1/attend/:eventId")
     async postAttendence(@Param("eventId")eventId){
         const userId = httpContext.get("userId")
+        if(!eventId){
+            throw new BadRequestException("eventId missing")
+        }
         return this.eventsService.postAttendence(eventId, userId)
     }
 
@@ -77,6 +80,13 @@ export class EventsController {
     async withDrawAttendance(@Param("eventId")eventId){
         const userId = httpContext.get("userId");
         return this.eventsService.withdrawFromEvent(eventId,userId);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get("v1/to-attend")
+    async eventToAttend(){
+        const userId = httpContext.get("userId");
+        return await this.eventsService.getEventsToAttend(userId);
     }
 
     @Get("v1/test")

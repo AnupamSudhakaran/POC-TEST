@@ -115,7 +115,7 @@ export class CustProfileService {
 
             if (custProfile.role === ROLES.PROFESSOR) {
                 const filter = { _id:userId };
-                await this.databaseService.updateCustProfile(filter, updateProfileDto);
+                return await this.databaseService.updateCustProfile(filter, updateProfileDto);
             }
             else {
                 throw new BadRequestException("This featre is now only for :: " + ROLES.PROFESSOR);
