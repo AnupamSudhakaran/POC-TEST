@@ -142,4 +142,21 @@ export class CustProfileService {
         }
     }
 
+    async deleteUser(userId: string, deletionId : string){
+        try{
+            var [custProfile, deletionProfile] = await Promise.all([this.databaseService.getCustProfileUsingId(userId), this.databaseService.getCustProfileUsingId(deletionId)]);
+
+            if(!custProfile ||  !deletionProfile){
+                throw new BadRequestException("Profile missing");
+            }
+            if(custProfile?.role === ROLES.ADMIN && deletionProfile?.role !== ROLES.ADMIN ){
+                await  this.databaseService.deleteProfile(deletionId);
+                return {"status":"SUCCESS"};
+            }
+            throw new BadRequestException("Deletion privilages not available ");
+        }catch(err){
+            throw err;
+        }
+    }
+
 }

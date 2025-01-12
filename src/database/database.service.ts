@@ -312,5 +312,14 @@ export class DatabaseService {
         }
     }
 
+    async deleteProfile(userId: string){
+        try {
+            const model = this.roConnection.model("custProfile");
+            const custProfile = await model.deleteOne({_id:userId})
+        } catch (error) {
+            throw error;
+        }
+    }
+
     
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { LoginDto } from 'src/common/dto/login.dto';
 import { CustProfileService } from './cust-profile.service';
 import {CreateUserDto } from 'src/common/dto/create-user.dto';
@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/auth/strict.gaurd';
 import { ServiceReviewDto } from 'src/common/dto/service-review.dto';
 import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
 import { ROLES } from 'src/model/cust-profile.model';
+import { query } from 'express';
 
 const httpcontext = require("express-http-context");
 
@@ -83,5 +84,17 @@ export class CustProfileController {
             throw new BadRequestException("Role is Wrong")
         }
 
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete("v1/profile")
+    async deleteUser(@Query() params){
+        const userId = httpcontext.get("userId");
+        const deletionId = params?.deletionId
+
+        if(!deletionId){
+            throw new  BadRequestException("deletionId not provided");
+        }
+        return await this.custProfileService.deleteUser(userId,deletionId);
     }
 }
