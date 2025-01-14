@@ -3,18 +3,22 @@ import { CreateUserDto } from 'src/common/dto/create-user.dto';
 import { LoginDto } from 'src/common/dto/login.dto';
 import { generateJWT, hashSHA, randomId, verfiyJWT } from 'src/common/utils/utils';
 import { DatabaseService } from 'src/database/database.service';
-import { SHA256_KEY } from 'src/common/common';
+import { REST_PASSWORD_MAIL, SHA256_KEY } from 'src/common/common';
 import { ResetPasswordDTO } from 'src/common/dto/reset-password.dto';
 import { ServiceReviewDto } from 'src/common/dto/service-review.dto';
 import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
 import { ROLES } from 'src/model/cust-profile.model';
-import { create } from 'domain';
+import { v4 as uuidv4 } from 'uuid';
+import { MailGunService } from 'src/mail-gun/mail-gun.service';
+import { ForgotPasswordResetDTO } from 'src/common/dto/forgot-password-reset.dto';
+
 const httpContext = require("express-http-context");
 
 @Injectable()
 export class CustProfileService {
     
     constructor(private readonly databaseService: DatabaseService,
+        private readonly mailGunService: MailGunService
     ){};
     async userLoginSerice(body: LoginDto){
         try{
@@ -159,4 +163,36 @@ export class CustProfileService {
         }
     }
 
+    async forgotPasswordService(email){
+        try {
+            const custProfile =  await this.databaseService.getCustProfileUsingEmail(email)
+            if(!custProfile){
+                throw new BadRequestException("Profile not found ");
+            }
+            const refrenceId = `ref${uuidv4().replaceAll("-","")}`
+            await this.databaseService.createForgotPasswordRefrence(refrenceId,email);
+            await this.mailGunService.pushMail(email,"Password Rest Link ", REST_PASSWORD_MAIL(refrenceId))
+            return {refrenceId}
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async resetPasswordUsingRefrenceId(forgetPasswordResetDto : ForgotPasswordResetDTO) {
+        try {
+            const refrenceId = forgetPasswordResetDto?.refrenceId;
+            const newPassword = forgetPasswordResetDto?.newPassword;
+            const refrenceDetails = await this.databaseService.getForgotPasswordRefrence(refrenceId);
+            if (!refrenceDetails) {
+                throw new BadRequestException(`No refrence Details found for : ${refrenceId}`);
+            }
+            const email = refrenceDetails?.email;
+
+            await this.databaseService.updateCustProfile({ email: email }, { passwordHash: hashSHA(newPassword, SHA256_KEY) });
+            this.databaseService.deleteForgotPasswordRefrence(refrenceId, email);
+            return { "status": "SUCCESS" }
+        } catch (err) {
+            throw err;
+        }
+    }
 }

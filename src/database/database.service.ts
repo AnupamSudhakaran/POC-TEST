@@ -329,5 +329,38 @@ export class DatabaseService {
         }
     }
 
+    async createForgotPasswordRefrence(refrenceId: string , email: string ){
+        try {
+            const model = this.roConnection.model("forgotPassword");
+            const dbPayload = {
+                _id:refrenceId,
+                email:email,
+                initiatedBy:Date.now()
+            }
+            return  await model.create(dbPayload);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getForgotPasswordRefrence(refrenceId){
+        try {
+            const model = this.roConnection.model("forgotPassword");
+            return await model.findOne({_id:refrenceId})
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async deleteForgotPasswordRefrence(refrenceId: string , email: string ){
+        try {
+            const model = this.rwConnection.model("forgotPassword");
+            return  await model.deleteOne({_id:refrenceId, email});
+        } catch (error) {
+            throw error;
+        }
+    }
+
     
 }

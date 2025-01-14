@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { LoginDto } from 'src/common/dto/login.dto';
 import { CustProfileService } from './cust-profile.service';
 import {CreateUserDto } from 'src/common/dto/create-user.dto';
@@ -8,6 +8,7 @@ import { ServiceReviewDto } from 'src/common/dto/service-review.dto';
 import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
 import { ROLES } from 'src/model/cust-profile.model';
 import { query } from 'express';
+import { ForgotPasswordResetDTO } from 'src/common/dto/forgot-password-reset.dto';
 
 const httpcontext = require("express-http-context");
 
@@ -97,4 +98,19 @@ export class CustProfileController {
         }
         return await this.custProfileService.deleteUser(userId,deletionId);
     }
+
+    @Get("v1/forgot-passowrd-initiate")
+    async forgotPasswordInitiate(@Query() params){
+        const email =  params?.email
+        if(!email){
+            throw new BadRequestException("Email not provided")
+        }
+
+        return await this.custProfileService.forgotPasswordService(email);
+    }   
+
+    @Post("v1/forgot-passowrd-reset")
+    async forgotPasswordReset(@Body() body: ForgotPasswordResetDTO){
+        return await this.custProfileService.resetPasswordUsingRefrenceId(body);
+    }   
 }
