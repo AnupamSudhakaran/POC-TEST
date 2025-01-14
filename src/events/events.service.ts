@@ -28,7 +28,9 @@ export class EventsService {
                 place:addEventDto.place,
                 eventName: addEventDto.eventName,
                 org:custProfile?.org,
-                attendees: 0              
+                attendees: 0  ,
+                industry : addEventDto.industry,
+                segment: addEventDto.segment            
             }
             return await this.databaseService.writeEventToDB(dbPayload);
         }catch(err){
@@ -72,7 +74,7 @@ export class EventsService {
         }
     }
 
-    async getEventsService(userId,skip,limit){
+    async getEventsService(userId,skip,limit, segment = null, industry =  null){
         try{
             const custProfile =await this.databaseService.getCustProfileUsingId(userId);
             if(!custProfile){
@@ -83,7 +85,7 @@ export class EventsService {
                 return {events};
             }
             else{
-                const events =  await this.getEventsForAttendees(custProfile?.org,skip,limit);
+                const events =  await this.getEventsForAttendees(custProfile?.org,skip,limit,segment,industry);
                 return {events};
             }
         }catch(err){
@@ -166,15 +168,15 @@ export class EventsService {
 
     }
 
-    private async getEventsForAttendees(org:String, skip:Number, limit: Number){
+    private async getEventsForAttendees(org:String, skip:Number, limit: Number, segment = null, industry = null){
         try{
-            // const eventMapps =await this.databaseService.getStudentEventMappings(userId,skip,limit);
+            // const eventMapps = await this.databaseService.getStudentEventMappings(userId,skip,limit);
             // console.log(eventMapps);
             // const eventIds = eventMapps.map((event)=>{
             //     return event?.eventId;
             // })
             // console.log("df",eventIds);
-            return await this.databaseService.getEventsForStudents(org,skip,limit);
+            return await this.databaseService.getEventsForStudents(org,skip,limit,segment, industry);
             // const events
         }catch(error){
             throw error;

@@ -184,11 +184,19 @@ export class DatabaseService {
         }
     }
 
-    async getEventsForStudents(org,skip,limit){
+    async getEventsForStudents(org,skip,limit,segment = null ,industry = null){
         try{
             const model = this.roConnection.model("events");
             const currTime  = Date.now()
-            const events = await model.find({org:org,fromDateTime:{$lte:currTime}})
+            const filter  = {org:org,fromDateTime:{$lte:currTime}}
+            if(segment){
+                filter["segment"] = segment;
+            }
+            if(industry){
+                filter["industry"] = industry;
+            }
+                
+            const events = await model.find(filter)
             .sort({fromDateTime:1})
             .skip(skip)
             .limit(limit)

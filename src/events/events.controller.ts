@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/strict.gaurd';
-import { AddEventDto } from 'src/common/dto/add-event.dto';
+import { AddEventDto, SEGMENT } from 'src/common/dto/add-event.dto';
 import { EventsService } from './events.service';
 import { RatingDto } from 'src/common/dto/rating.dto';
 import { AssosiateEventsDto } from 'src/common/dto/assosiate-events.dto';
@@ -41,12 +41,13 @@ export class EventsController {
         const userId = httpContext.get("userId");
         const skip = params?.skip;
         const limit = params?.limit;
-
+        var segment  = params?.segment
+        const industry = params?.industry
         if(!skip || !limit){
             return new  BadRequestException("Params not found [limit,skip]");
         }
-        
-        return this.eventsService.getEventsService(userId,skip,limit);
+    
+        return this.eventsService.getEventsService(userId,skip,limit,segment,industry);
 
     }
 

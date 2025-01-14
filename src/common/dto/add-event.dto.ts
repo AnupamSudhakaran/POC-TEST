@@ -2,7 +2,7 @@
 // @Prop({required:true})
 // _id:String;
 
-import { IsDate, IsNotEmpty, IsNumber, MAX_LENGTH, MaxLength, MinLength } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString, MAX_LENGTH, MaxLength, MinLength } from "class-validator";
 
 // @Prop({required: true})
 // presenterId:String;
@@ -18,6 +18,20 @@ import { IsDate, IsNotEmpty, IsNumber, MAX_LENGTH, MaxLength, MinLength } from "
 
 // @Prop({required:false})
 // attendees:Number;
+
+export enum INDUSTRY  {
+    TECHNICAL= "TECHNICAL",
+    MECHANICAL = "MECHANICAL",
+    MOTIVATIONAL = "MOTIVATIONAL"
+}
+
+export enum SEGMENT{
+    SEGMENT1 = "SEGMENT1",
+    SEGMENT2 = "SEGMENT2",
+    SEGMENT3 = "SEGMENT3"
+    
+}
+
 export class AddEventDto{
 
 
@@ -26,7 +40,6 @@ export class AddEventDto{
     eventName: String
 
     
-
     @IsNotEmpty()
     @MaxLength(500)
     @MinLength(20)
@@ -43,4 +56,11 @@ export class AddEventDto{
     @IsNotEmpty()
     toDateTime:Date;
 
+    @IsNotEmpty()
+    @IsEnum(INDUSTRY)
+    industry: INDUSTRY
+
+    @IsNotEmpty()
+    @IsEnum(SEGMENT)
+    segment: SEGMENT
 }

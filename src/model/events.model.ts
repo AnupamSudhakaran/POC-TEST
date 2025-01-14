@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { INDUSTRY, SEGMENT } from "src/common/dto/add-event.dto";
 
 
 @Schema({ collection: "events" })
@@ -29,7 +30,11 @@ export class Events {
     @Prop({ required: false })
     attendees: Number
 
+    @Prop({required: true})
+    industry : INDUSTRY
 
+    @Prop({required: true})
+    segment : SEGMENT
 }
 
 export type EventsDocument = Events & Document
