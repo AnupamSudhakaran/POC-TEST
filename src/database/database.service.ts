@@ -188,7 +188,7 @@ export class DatabaseService {
         try{
             const model = this.roConnection.model("events");
             const currTime  = Date.now()
-            const filter  = {fromDateTime:{$lte:currTime}}
+            const filter  = {fromDateTime:{$gte:currTime}}
             if(segment){
                 filter["segment"] = segment;
             }
@@ -197,7 +197,7 @@ export class DatabaseService {
             }
                 
             const events = await model.find(filter)
-            .sort({fromDateTime:1})
+            .sort({fromDateTime:-1})
             .skip(skip)
             .limit(limit)
             return events;
