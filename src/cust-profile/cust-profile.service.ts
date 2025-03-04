@@ -50,7 +50,7 @@ export class CustProfileService {
     async createUser(createUserDto: CreateUserDto) {
         try {
 
-            const constPassword = "pass1234"
+            const constPassword = createUserDto?.email.split("@")[0]
             const passwordHash = hashSHA(constPassword, SHA256_KEY)
             var dbPayload = {
                 _id: randomId(),

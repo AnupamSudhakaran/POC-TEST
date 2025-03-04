@@ -188,7 +188,7 @@ export class DatabaseService {
         try{
             const model = this.roConnection.model("events");
             const currTime  = Date.now()
-            const filter  = {org:org,fromDateTime:{$lte:currTime}}
+            const filter  = {fromDateTime:{$lte:currTime}}
             if(segment){
                 filter["segment"] = segment;
             }
