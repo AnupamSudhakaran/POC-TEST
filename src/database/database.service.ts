@@ -5,6 +5,8 @@ import { privateDecrypt } from 'crypto';
 import { threadId } from 'worker_threads';
 import { fileURLToPath } from 'url';
 import { ROLES } from 'src/model/cust-profile.model';
+import { UpdateEventDto } from 'src/common/dto/update-event.dto';
+import { error } from 'console';
 
 @Injectable()
 export class DatabaseService {
@@ -278,7 +280,12 @@ export class DatabaseService {
     async getEventsForNextHour(){
         try{
             const model = this.rwConnection.model("events");
-            const filter = {fromDateTime:{$gte:Date.now() - 1 * 60 * 60 * 1000, $lt: Date.now() + 10 * 60 * 60 * 1000}}
+            const filter = {
+                fromDateTime: {
+                    $gte: Date.now(),                      
+                    $lt: Date.now() + 1 * 60 * 60 * 1000 
+                }
+            };
             console.log("df",filter);
             const events = await model.find(filter);
             return events;
@@ -317,6 +324,34 @@ export class DatabaseService {
             return result;
         }catch(err){
             throw err;
+        }
+    }
+
+    async getEventFromEventID(eventId: String) {
+        try {
+            const model = this.rwConnection.model("events");
+            const result = await model.findOne({ _id: eventId });
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateEvent(eventId:String, event){
+        try{
+            const model = this.rwConnection.model("events");
+            return await model.updateOne({_id:eventId},event);
+        }catch{
+            throw error;
+        }
+    }
+
+    async deleteEvent(eventId:String){
+        try{
+            const model = this.rwConnection.model("events");
+            return await model.deleteOne({_id:eventId});
+        }catch{
+            throw error;
         }
     }
 

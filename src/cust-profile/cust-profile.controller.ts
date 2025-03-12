@@ -112,5 +112,5 @@ export class CustProfileController {
     @Post("v1/forgot-passowrd-reset")
     async forgotPasswordReset(@Body() body: ForgotPasswordResetDTO){
         return await this.custProfileService.resetPasswordUsingRefrenceId(body);
-    }   
+    }
 }

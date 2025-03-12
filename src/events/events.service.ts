@@ -2,6 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { AddEventDto } from 'src/common/dto/add-event.dto';
 import { AssosiateEventsDto } from 'src/common/dto/assosiate-events.dto';
 import { RatingDto } from 'src/common/dto/rating.dto';
+import { UpdateEventDto } from 'src/common/dto/update-event.dto';
 import { randomEventId } from 'src/common/utils/utils';
 import { DatabaseService } from 'src/database/database.service';
 import { CustProfile, ROLES } from 'src/model/cust-profile.model';
@@ -38,6 +39,63 @@ export class EventsService {
             throw err;
         }
         
+    }
+
+    
+    async editEvent(userId:String, eventId:String,updateEventDto: UpdateEventDto){
+        try {
+            let [custProfile,event]  = await Promise.all([this.databaseService.getCustProfileUsingId(userId), this.databaseService.getEventFromEventID(eventId)])
+            if(custProfile?.role === ROLES.PROFESSOR && event?.presenterId ===  userId){
+                let dbPayload:any = {}
+                if(updateEventDto?.description){
+                    dbPayload.description = updateEventDto?.description
+                }
+
+                if(updateEventDto?.eventName){
+                    dbPayload.eventName = updateEventDto?.eventName
+                }
+                
+                if(updateEventDto?.fromDateTime){
+                    dbPayload.fromDateTime = updateEventDto?.fromDateTime
+                }
+                
+                if(updateEventDto?.industry){
+                    dbPayload.industry = updateEventDto?.industry
+                }
+
+                if(updateEventDto?.place){
+                    dbPayload.place = updateEventDto?.place
+                }
+
+                
+                if(updateEventDto?.segment){
+                    dbPayload.segment = updateEventDto?.segment
+                }
+
+                
+                if(updateEventDto?.toDateTime){
+                    dbPayload.toDateTime = updateEventDto?.toDateTime
+                }
+                return this.databaseService.updateEvent(eventId,dbPayload)
+            }
+            throw new BadRequestException("You are not authorized to do this action")
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteEvent(userId:String , eventId:String){
+        try {
+            let [custProfile,event]  = await Promise.all([this.databaseService.getCustProfileUsingId(userId), this.databaseService.getEventFromEventID(eventId)])
+            if(custProfile?.role === ROLES.PROFESSOR && event?.presenterId ===  userId){
+                return await this.databaseService.deleteEvent(eventId)
+            }
+            
+            throw new BadRequestException("You are not allowed to do this action")
+        } catch (error) {
+            
+        }
     }
 
     async postRatingService(userId,ratingDto: RatingDto){

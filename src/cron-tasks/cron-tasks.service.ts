@@ -29,8 +29,10 @@ export class CronTasksService {
         const custProfiles = await this.databaseServive.getManyCustProfiles(filter)
         console.log("custProfiles", custProfiles);
         const mailArray = custProfiles.map(profile=>profile?.email);
-        const mailString = mailArray.map(String).join(',');
-        console.log("mailString",mailString);
-        this.mailGunService.pushMail(mailString, subject, text);
+        // const mailString = mailArray.map(String).join(',');
+        // console.log("mailString",mailString);
+        for(let mail of mailArray){
+            this.mailGunService.pushMail(mail as string, subject, text);
+        }
     }
 }
