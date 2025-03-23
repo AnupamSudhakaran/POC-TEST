@@ -23,7 +23,7 @@ export class CustProfile{
     @Prop({required: true, enum: ROLES})
     role: ROLES
 
-    @Prop({required: true })
+    @Prop({required: false })
     org:String
     
     @Prop({required: false})

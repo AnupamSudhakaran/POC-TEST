@@ -60,7 +60,9 @@ export const verfiyJWT= (token)=>{
         throw err;
       }
     }
+
+
+export const takeCommaSepratedStringReturnList = (cString) => {
+  return cString.split(",").map(item => item.trim());
+}
     
-
-
-

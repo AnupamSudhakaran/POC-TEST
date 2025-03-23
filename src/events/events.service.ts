@@ -173,6 +173,10 @@ export class EventsService {
     async postAttendence(eventId: String, userId: String){
         try{
             const filter = {_id:eventId}
+            const isEventAlreadyyMapped = await this.databaseService.getEventattendeeMapping(eventId,userId);
+            if(isEventAlreadyyMapped){
+                throw new BadRequestException("event already being attendeed");
+            }
             const [event, addattendee] = await Promise.all([this.databaseService.getEventsFromDB(filter), 
                 this.databaseService.addAttendeeToEvent(eventId)]); 
             if(!event){

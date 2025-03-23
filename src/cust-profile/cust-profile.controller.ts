@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { LoginDto } from 'src/common/dto/login.dto';
 import { CustProfileService } from './cust-profile.service';
 import {CreateUserDto } from 'src/common/dto/create-user.dto';
@@ -9,6 +9,7 @@ import { UpdateProfileDto } from 'src/common/dto/update-profile.dto';
 import { ROLES } from 'src/model/cust-profile.model';
 import { query } from 'express';
 import { ForgotPasswordResetDTO } from 'src/common/dto/forgot-password-reset.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 const httpcontext = require("express-http-context");
 
@@ -112,5 +113,11 @@ export class CustProfileController {
     @Post("v1/forgot-passowrd-reset")
     async forgotPasswordReset(@Body() body: ForgotPasswordResetDTO){
         return await this.custProfileService.resetPasswordUsingRefrenceId(body);
+    }
+
+    @Post("v1/bulk-professors")
+    @UseInterceptors(FileInterceptor('file'))
+    async addBulkProfessors(@UploadedFile() file:Express.Multer.File){
+        return await this.custProfileService.bulkAddProfessors(file)
     }
 }

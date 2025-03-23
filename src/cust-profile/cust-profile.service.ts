@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/common/dto/create-user.dto';
 import { LoginDto } from 'src/common/dto/login.dto';
-import { generateJWT, hashSHA, randomId, verfiyJWT } from 'src/common/utils/utils';
+import { generateJWT, hashSHA, randomId, takeCommaSepratedStringReturnList, verfiyJWT } from 'src/common/utils/utils';
 import { DatabaseService } from 'src/database/database.service';
 import { REST_PASSWORD_MAIL, SHA256_KEY } from 'src/common/common';
 import { ResetPasswordDTO } from 'src/common/dto/reset-password.dto';
@@ -11,6 +11,8 @@ import { ROLES } from 'src/model/cust-profile.model';
 import { v4 as uuidv4 } from 'uuid';
 import { MailGunService } from 'src/mail-gun/mail-gun.service';
 import { ForgotPasswordResetDTO } from 'src/common/dto/forgot-password-reset.dto';
+import * as xlsx from 'xlsx';
+import { json } from 'express';
 
 const httpContext = require("express-http-context");
 
@@ -194,5 +196,46 @@ export class CustProfileService {
         } catch (err) {
             throw err;
         }
+    }
+
+
+    // {
+    //     Name: 'Prageet Nishant',
+    //     Email: 'prageet.nishant@gmail.com',
+    //     Synopsis: 'Credit risk specialist with 12+ years of experience in financial risk modeling, credit underwriting, and regulatory compliance. Strong background in financial modeling, portfolio management, and investment banking operations.\r\n' +
+    //       '\r\n' +
+    //       'Prageet has worked as Senior Manager - Credit Risk,  and has been associated with companies like Crisil, Srei Equipment Finance, OakNorth Analytical',
+    //     Skill: 'Risk Assessment, Financial Modeling, Credit Policy',
+    //     Industry: 'Finance',
+    //     Segment: 'Audit/Risk & Compliance'
+    //   },
+    async bulkAddProfessors(file:Express.Multer.File){
+            const workbook = xlsx.read(file.buffer, { type: 'buffer' });
+
+            // Get the first sheet name
+            const sheetName = workbook.SheetNames[0];
+            // Convert sheet data to JSON
+            const jsonData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            console.log("lenght",jsonData?.length)
+            for(let obj of jsonData){
+                try {
+                    let createUserDto:CreateUserDto =  new CreateUserDto();
+                    createUserDto.role = ROLES.PROFESSOR
+                    createUserDto.name = obj["Name"].trim();
+                    createUserDto.email = obj["Email"].trim();
+                    createUserDto.introduction = obj["Synopsis"];
+                    createUserDto.techExpertise = takeCommaSepratedStringReturnList(obj["Skill"]);
+                    createUserDto.industry = obj["Industry"].trim();
+                    createUserDto.segment = obj["Segment"].trim();
+                    if(obj["Contact No."]){
+                        createUserDto.contactNo = obj["Contact No."]
+                    }
+                    await this.createUser(createUserDto);
+                } catch (error) {
+                    console.log("error");
+                }
+                
+            }
+        
     }
 }

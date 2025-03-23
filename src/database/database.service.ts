@@ -111,7 +111,7 @@ export class DatabaseService {
     async getEventsFromDB(filter){
         try{
             console.log(`Trying to get events using filter :: ${JSON.stringify(filter)}`)
-            const model = this.roConnection.model("events");
+            const model = this.rwConnection.model("events");
             return model.findOne(filter);
 
         }catch(err){
@@ -242,7 +242,7 @@ export class DatabaseService {
     async getEventattendeeMapping(eventId,userId){
         try{
             const model = this.rwConnection.model("attendee_event_mapping");
-            const result  = await model.findOne({eventId,userId});
+            const result  = await model.findOne({eventId,atendeeId:userId});
             return result;
         }catch(err){
             throw err;
@@ -261,8 +261,11 @@ export class DatabaseService {
 
     async addAttendeeToEvent(eventId,addby = 1 ){
         try{
+            console.log("asfds",eventId,addby)
             const model = this.rwConnection.model("events");
-            await model.updateOne({_id:eventId},{$inc:{attend:addby}});
+            
+            const resp = await model.updateOne({_id:eventId},{$inc:{attendees:addby}});
+            console.log(resp);
         }catch(err){
             throw err;
         }
