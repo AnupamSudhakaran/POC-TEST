@@ -150,16 +150,14 @@ export class CustProfileService {
 
     async deleteUser(userId: string, deletionId : string){
         try{
-            var [custProfile, deletionProfile] = await Promise.all([this.databaseService.getCustProfileUsingId(userId), this.databaseService.getCustProfileUsingId(deletionId)]);
-
-            if(!custProfile ||  !deletionProfile){
-                throw new BadRequestException("Profile missing");
+            var custProfile = await this.databaseService.getCustProfileUsingId(userId);
+            if(!custProfile){
+                throw new BadRequestException("Profile missing |  cannot be missing");
             }
-            if(custProfile?.role === ROLES.ADMIN && deletionProfile?.role !== ROLES.ADMIN ){
-                await  this.databaseService.deleteProfile(deletionId);
-                return {"status":"SUCCESS"};
-            }
-            throw new BadRequestException("Deletion privilages not available ");
+            
+            await  this.databaseService.deleteProfile(deletionId);
+            return {"status":"SUCCESS"};
+            
         }catch(err){
             throw err;
         }
