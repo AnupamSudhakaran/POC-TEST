@@ -154,6 +154,9 @@ export class CustProfileService {
             if(!custProfile){
                 throw new BadRequestException("Profile missing |  cannot be missing");
             }
+            if(custProfile?.role === ROLES.PROFESSOR){
+                this.databaseService.deleteAllEventForProfessor(userId);
+            }
             
             await  this.databaseService.deleteProfile(deletionId);
             return {"status":"SUCCESS"};

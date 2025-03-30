@@ -400,5 +400,15 @@ export class DatabaseService {
         }
     }
 
+    async deleteAllEventForProfessor(presenterId){
+        try {
+            const model = this.rwConnection.model("events");
+            const resp = await model.deleteMany({presenterId:presenterId});
+            console.log(resp)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     
 }
