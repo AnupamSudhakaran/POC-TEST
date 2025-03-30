@@ -31,10 +31,10 @@ export class Events {
     attendees: Number
 
     @Prop({required: true})
-    industry : INDUSTRY
+    industry : string
 
     @Prop({required: true})
-    segment : SEGMENT
+    segment : string
 }
 
 export type EventsDocument = Events & Document
