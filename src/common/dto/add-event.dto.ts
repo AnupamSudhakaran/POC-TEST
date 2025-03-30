@@ -57,10 +57,8 @@ export class AddEventDto{
     toDateTime:Date;
 
     @IsNotEmpty()
-    @IsEnum(INDUSTRY)
-    industry: INDUSTRY
+    industry: string
 
     @IsNotEmpty()
-    @IsEnum(SEGMENT)
-    segment: SEGMENT
+    segment:string
 }
