@@ -210,7 +210,7 @@ export class CustProfileService {
     //     Industry: 'Finance',
     //     Segment: 'Audit/Risk & Compliance'
     //   },
-    async bulkAddProfessors(file:Express.Multer.File){
+    async bulkAddProfessors(file:Express.Multer.File,role){
             const workbook = xlsx.read(file.buffer, { type: 'buffer' });
 
             // Get the first sheet name
@@ -221,7 +221,7 @@ export class CustProfileService {
             for(let obj of jsonData){
                 try {
                     let createUserDto:CreateUserDto =  new CreateUserDto();
-                    createUserDto.role = ROLES.PROFESSOR
+                    createUserDto.role = role
                     createUserDto.name = obj["Name"].trim();
                     createUserDto.email = obj["Email"].trim();
                     createUserDto.introduction = obj["Synopsis"];

@@ -115,9 +115,12 @@ export class CustProfileController {
         return await this.custProfileService.resetPasswordUsingRefrenceId(body);
     }
 
-    @Post("v1/bulk-professors")
+    @Post("v1/bulk-users")
     @UseInterceptors(FileInterceptor('file'))
-    async addBulkProfessors(@UploadedFile() file:Express.Multer.File){
-        return await this.custProfileService.bulkAddProfessors(file)
+    async addBulkProfessors(@UploadedFile() file:Express.Multer.File, @Query("role")role:ROLES){
+        if(!role){
+            throw new BadRequestException("Role missing")
+        }
+        return await this.custProfileService.bulkAddProfessors(file,role)
     }
 }
