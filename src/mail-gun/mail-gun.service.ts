@@ -12,13 +12,13 @@ export class MailGunService {
             port: 465,
             secure: true, // true for 465, false for other ports        
             auth: {
-              user: 'test@osttalent.com',
-              pass: '~2%@f1*8vDn}'
+              user: 'timetappers@osttalent.com',
+              pass: '@Fz2tFS3~Q?J'
             }
           });
           
           var mailOptions = {
-            from: 'test@osttalent.com',
+            from: 'timetappers@osttalent.com',
             to: toMail,
             subject: subject,
             text: text
