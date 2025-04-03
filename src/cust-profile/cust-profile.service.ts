@@ -156,6 +156,7 @@ export class CustProfileService {
             }
             if(custProfile?.role === ROLES.PROFESSOR){
                 this.databaseService.deleteAllEventForProfessor(userId);
+                this.databaseService.deleteStudentEventMapping(userId);
             }
             
             await  this.databaseService.deleteProfile(deletionId);

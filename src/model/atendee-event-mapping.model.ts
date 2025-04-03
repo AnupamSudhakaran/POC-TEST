@@ -10,6 +10,9 @@ export class AtendeeEventMappping {
     @Prop({ required: true , index: true})
     eventId: String
 
+    @Prop({required: true, index: true})
+    presenterId:string
+    
     @Prop({ required: false, type: Date, expires: 100 })
     expiry: Date
 

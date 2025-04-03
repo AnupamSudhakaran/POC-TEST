@@ -221,10 +221,10 @@ export class DatabaseService {
         }
     }
 
-    async createEventattendeeMapping(eventId,userId,expiry){
+    async createEventattendeeMapping(eventId,userId,expiry,presenterId){
         try{
             const model = this.rwConnection.model("attendee_event_mapping");
-            const result  = await model.updateOne({eventId,atendeeId:userId}, {$set:{eventId,atendeeId:userId,expiry}},{upsert:true});
+            const result  = await model.updateOne({eventId,atendeeId:userId}, {$set:{eventId,atendeeId:userId,expiry,presenterId:presenterId}},{upsert:true});
         }catch(err){
             throw err;
         }
@@ -405,6 +405,15 @@ export class DatabaseService {
             const model = this.rwConnection.model("events");
             const resp = await model.deleteMany({presenterId:presenterId});
             console.log(resp)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteStudentEventMapping(presenterId){
+        try {
+            const model = this.rwConnection.model("attendee_event_mapping");
+            model.deleteMany({presenterId:presenterId});
         } catch (error) {
             console.log(error)
         }

@@ -182,7 +182,7 @@ export class EventsService {
             if(!event){
                 throw new BadRequestException("Event not valid")
             }
-            const eventMapping = await this.databaseService.createEventattendeeMapping(eventId, userId, event?.toDateTime);
+            const eventMapping = await this.databaseService.createEventattendeeMapping(eventId, userId, event?.toDateTime, event?.presenterId);
         }catch(err){
             throw err;
         }
