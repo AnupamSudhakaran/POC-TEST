@@ -24,7 +24,8 @@ export class Events {
 
     @Prop({required: true})
     toDateTime: Date;
-    @Prop({ required: true })
+
+    @Prop({ required: false })
     org: String;
 
     @Prop({ required: false })
