@@ -40,7 +40,7 @@ export class UpdateEventDto{
     eventName: String
 
     @IsOptional()
-    @MaxLength(500)
+    @MaxLength(1500)
     @MinLength(20)
     description:String
 
