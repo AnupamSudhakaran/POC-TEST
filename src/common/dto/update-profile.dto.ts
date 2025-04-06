@@ -27,4 +27,7 @@ export class UpdateProfileDto {
     @IsOptional()
     projects: String[]
 
+    @IsOptional()
+    currentCourse:String
+
 }

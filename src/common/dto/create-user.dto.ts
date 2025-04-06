@@ -42,6 +42,9 @@ export class CreateUserDto{
     projects: String[]
 
     @IsOptional()
+    currentCourse:String
+
+    @IsOptional()
     metaData: any
 
 

@@ -13,6 +13,7 @@ import { MailGunService } from 'src/mail-gun/mail-gun.service';
 import { ForgotPasswordResetDTO } from 'src/common/dto/forgot-password-reset.dto';
 import * as xlsx from 'xlsx';
 import { json } from 'express';
+import { create } from 'domain';
 
 const httpContext = require("express-http-context");
 
@@ -73,6 +74,9 @@ export class CustProfileService {
             }
             if (createUserDto?.industry) {
                 dbPayload["industry"] = createUserDto?.industry
+            }
+            if(createUserDto?.currentCourse){
+                dbPayload["currentCourse"] =  createUserDto?.currentCourse
             }
             await this.databaseService.createCustProfile(dbPayload);
             return {
@@ -231,6 +235,12 @@ export class CustProfileService {
                     createUserDto.segment = obj["Segment"].trim();
                     if(obj["Contact No."]){
                         createUserDto.contactNo = obj["Contact No."]
+                    }
+                    if(obj["org"]){
+                        createUserDto.contactNo =  obj["org"]
+                    }
+                    if(obj["currentCourse"]){
+                        createUserDto.contactNo =  obj["currentCourse"]
                     }
                     await this.createUser(createUserDto);
                 } catch (error) {

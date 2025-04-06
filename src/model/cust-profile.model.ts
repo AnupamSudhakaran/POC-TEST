@@ -53,6 +53,9 @@ export class CustProfile{
     @Prop({required: false})
     lastLoggedInAt: Date;
 
+    @Prop({required: false})
+    currentCourse: String
+
     @Prop({required: false, type:{}})
     metaData: any
 }
