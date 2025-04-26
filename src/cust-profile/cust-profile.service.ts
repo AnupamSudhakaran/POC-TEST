@@ -229,22 +229,31 @@ export class CustProfileService {
                     createUserDto.role = role
                     createUserDto.name = obj["Name"].trim();
                     createUserDto.email = obj["Email"].trim();
-                    createUserDto.introduction = obj["Synopsis"];
+                    if(obj["Synopsis"]){
+                        createUserDto.introduction = obj["Synopsis"];
+                    }
+                    if(obj["Skill"]){
                     createUserDto.techExpertise = takeCommaSepratedStringReturnList(obj["Skill"]);
-                    createUserDto.industry = obj["Industry"].trim();
-                    createUserDto.segment = obj["Segment"].trim();
+                    }
+                    if(obj["Industry"]){
+                        createUserDto.industry = obj["Industry"].trim();
+                    }
+                    if(obj["Segment"]){
+                        createUserDto.segment = obj["Segment"].trim();
+                    }
                     if(obj["Contact No."]){
                         createUserDto.contactNo = obj["Contact No."]
                     }
                     if(obj["org"]){
-                        createUserDto.contactNo =  obj["org"]
+                        createUserDto.org =  obj["org"]
                     }
                     if(obj["currentCourse"]){
-                        createUserDto.contactNo =  obj["currentCourse"]
+                        createUserDto.currentCourse =  obj["currentCourse"]
                     }
                     await this.createUser(createUserDto);
                 } catch (error) {
                     console.log("error");
+                    console.log(error)
                 }
                 
             }
