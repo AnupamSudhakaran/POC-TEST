@@ -134,9 +134,9 @@ export class CustProfileService {
         return { "Status": "Success" };
     }
 
-    async getPresentersService(skip, limit){
+    async getPresentersService(skip, limit,industry=null,segment=null){
         try{
-            const presenters = await this.databaseService.getPresentersFromDb(skip,limit);
+            const presenters = await this.databaseService.getPresentersFromDb(skip,limit,industry,segment);
             return {presenters};
         }catch(err){
             throw err;

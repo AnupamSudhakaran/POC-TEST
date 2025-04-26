@@ -64,10 +64,12 @@ export class CustProfileController {
     async getPresenters(@Query()params){
         const skip = params?.skip;
         const limit = params?.limit;
+        const segment = params?.segment;
+        const industry = params?.industry;
         if(!skip || !limit){
             return new  BadRequestException("Params not found [limit,skip]");
         }
-        return await this.custProfileService.getPresentersService(skip, limit);
+        return await this.custProfileService.getPresentersService(skip, limit,industry, segment);
     }
 
     @UseGuards(AuthGuard)

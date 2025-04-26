@@ -208,10 +208,17 @@ export class DatabaseService {
         }
     }
 
-    async getPresentersFromDb(skip, limit) {
+    async getPresentersFromDb(skip, limit,industry=null,segment=null) {
         try {
+            const filter = {role: ROLES.PROFESSOR}
+            if(industry){
+                filter["industry"] = industry;
+            }
+            if(segment){
+                filter["segment"] = segment;
+            }
             const model  = this.roConnection.model("custProfile");
-            const  presneters = await model.find({role: ROLES.PROFESSOR})
+            const  presneters = await model.find(filter)
             .sort({lastLoggedInAt:-1})
             .skip(skip)
             .limit(limit);
