@@ -134,18 +134,8 @@ export class EventsService {
 
     async getEventsService(userId,skip,limit, segment = null, industry =  null){
         try{
-            const custProfile =await this.databaseService.getCustProfileUsingId(userId);
-            if(!custProfile){
-                throw new BadRequestException("User has not been registered");
-            }
-            if(custProfile?.role === ROLES.PROFESSOR){
-                const events =  await  this.getEventsForProffesor(userId,skip,limit);
+                const events =  await this.getEventsForAttendees("RANDOM_ORG",skip,limit,segment,industry);
                 return {events};
-            }
-            else{
-                const events =  await this.getEventsForAttendees(custProfile?.org,skip,limit,segment,industry);
-                return {events};
-            }
         }catch(err){
             throw err;
         }

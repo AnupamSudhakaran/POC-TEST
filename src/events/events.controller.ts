@@ -106,6 +106,20 @@ export class EventsController {
         return await this.eventsService.getEventsToAttend(userId);
     }
 
+    @UseGuards(AuthGuard)
+    @Get("v1/presenters")
+    async eventsForPresenters(@Query() params: any) {
+        const skip = params?.skip;
+        const limit = params?.limit;
+
+        if (!skip || !limit) {
+            return new BadRequestException("Params not found [limit,skip]");
+        }
+
+        const userId = httpContext.get("userId");
+        return await this.eventsService.getEventsForProffesor(userId,skip,limit);
+    }
+
     @Get("v1/test")
     async test() {
         return await this.eventsService.test();
