@@ -125,4 +125,9 @@ export class CustProfileController {
         }
         return await this.custProfileService.bulkAddProfessors(file,role)
     }
+
+    @Get("v1/profile")
+    async getCustProfile(@Query("userId") userId){
+        return await this.custProfileService.getCustomerProfileSearch(userId);
+    }
 }

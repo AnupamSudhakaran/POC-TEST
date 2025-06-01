@@ -259,4 +259,16 @@ export class CustProfileService {
             }
         
     }
+
+    async getCustomerProfileSearch(userId) {
+        try {
+            const profile = await this.databaseService.getCustProfileUsingId(userId)
+            if (!profile) {
+                throw new BadRequestException("Profile not found for userId :: " + userId);
+            }
+            return profile;
+        } catch (error) {
+            throw new BadRequestException("Profile not found for userId :: " + userId);
+        }
+    }
 }

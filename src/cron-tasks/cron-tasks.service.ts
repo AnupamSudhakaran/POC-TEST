@@ -21,8 +21,15 @@ export class CronTasksService {
     private async processForanEvent(event){
         const eventId = event?._id
         const [attendeesForAnEvent, eventData] = await Promise.all( [this.databaseServive.getAllAttendeesForAnEvent(eventId), this.databaseServive.getEventsFromDB({_id:eventId})]);
-        const subject = `Reminder to attend event ${eventId}`
-        const text = `Decription :: ${eventData?.description}`
+        const presenter = await this.databaseServive.getCustProfileUsingId(eventData?.presenterId);
+        const subject = `TimeTappers.Com | Event Notification |Reminder to attend event ${eventData?.eventName}`;
+        const text = `Decription :: ${eventData?.description}\n
+                Name :: ${eventData?.eventName}\n
+                starts At:: ${eventData?.fromDateTime}\n
+                Location :: ${eventData?.place}\n
+                Presented By :: ${presenter?.firstName} ${presenter?.lastName}\n
+                Presenter Description :: ${presenter?.description}\n
+        `
         console.log("attendeesForAnEvent",attendeesForAnEvent);
         const custIds= attendeesForAnEvent.map(mapping=> mapping?.atendeeId)
         const filter = {_id:{$in:custIds}}
