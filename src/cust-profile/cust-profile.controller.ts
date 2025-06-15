@@ -117,6 +117,7 @@ export class CustProfileController {
         return await this.custProfileService.resetPasswordUsingRefrenceId(body);
     }
 
+    @UseGuards(AuthGuard)
     @Post("v1/bulk-users")
     @UseInterceptors(FileInterceptor('file'))
     async addBulkProfessors(@UploadedFile() file:Express.Multer.File, @Query("role")role:ROLES){

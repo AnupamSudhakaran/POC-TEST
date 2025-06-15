@@ -304,6 +304,29 @@ export class DatabaseService {
         }
     }
 
+    async getEventsForNextFiveDays() {
+        try {
+            const model = this.rwConnection.model("events");
+            
+            const now = Date.now();
+            const fiveDaysLater = now + 5 * 24 * 60 * 60 * 1000; // 5 days in milliseconds
+    
+            const filter = {
+                fromDateTime: {
+                    $gte: now,
+                    $lt: fiveDaysLater
+                }
+            };
+    
+            console.log("Filter:", filter);
+            const events = await model.find(filter);
+            return events;
+        } catch (err) {
+            throw err;
+        }
+    }
+    
+
     async getAllAttendeesForAnEvent(eventId){
         try{
             const model = this.rwConnection.model("attendee_event_mapping");

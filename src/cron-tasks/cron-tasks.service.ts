@@ -18,6 +18,15 @@ export class CronTasksService {
         return events;
     }
 
+    @Cron("0 0 * * *")
+    async runEmailCron5Days(){
+        const events = await this.databaseServive.getEventsForNextFiveDays();
+        for(var event of events){
+                this.processForanEvent(event);
+        }
+        return events;
+    }
+
     private async processForanEvent(event){
         const eventId = event?._id
         const [attendeesForAnEvent, eventData] = await Promise.all( [this.databaseServive.getAllAttendeesForAnEvent(eventId), this.databaseServive.getEventsFromDB({_id:eventId})]);
@@ -30,11 +39,9 @@ export class CronTasksService {
                 Presented By :: ${presenter?.firstName} ${presenter?.lastName}\n
                 Presenter Description :: ${presenter?.description}\n
         `
-        console.log("attendeesForAnEvent",attendeesForAnEvent);
         const custIds= attendeesForAnEvent.map(mapping=> mapping?.atendeeId)
         const filter = {_id:{$in:custIds}}
         const custProfiles = await this.databaseServive.getManyCustProfiles(filter)
-        console.log("custProfiles", custProfiles);
         const mailArray = custProfiles.map(profile=>profile?.email);
         // const mailString = mailArray.map(String).join(',');
         // console.log("mailString",mailString);

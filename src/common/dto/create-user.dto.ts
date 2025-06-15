@@ -47,5 +47,8 @@ export class CreateUserDto{
     @IsOptional()
     metaData: any
 
+    @IsOptional()
+    addedBy: String;    
+
 
 }

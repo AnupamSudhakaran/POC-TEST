@@ -217,7 +217,11 @@ export class CustProfileService {
     //   },
     async bulkAddProfessors(file:Express.Multer.File,role){
             const workbook = xlsx.read(file.buffer, { type: 'buffer' });
-
+            const userId  = httpContext.get("userId");
+            const userProfile = await this.databaseService.getCustProfileUsingId(userId);
+            if(!userProfile || userProfile.role !== ROLES.ADMIN || userProfile.role !== ROLES.SUBADMIN){
+                throw new BadRequestException("You are not allowed to perform this operation");
+            }
             // Get the first sheet name
             const sheetName = workbook.SheetNames[0];
             // Convert sheet data to JSON
@@ -229,6 +233,7 @@ export class CustProfileService {
                     createUserDto.role = role
                     createUserDto.name = obj["Name"].trim();
                     createUserDto.email = obj["Email"].trim();
+                    createUserDto.addedBy = userId;
                     if(obj["Synopsis"]){
                         createUserDto.introduction = obj["Synopsis"];
                     }

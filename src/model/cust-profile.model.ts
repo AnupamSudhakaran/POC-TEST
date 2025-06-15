@@ -58,6 +58,9 @@ export class CustProfile{
 
     @Prop({required: false, type:{}})
     metaData: any
+
+    @Prop({required: false})
+    addedBy: String;
 }
 
 export type CustProfileDocument =  CustProfile & Document
