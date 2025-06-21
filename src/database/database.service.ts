@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { ROLES } from 'src/model/cust-profile.model';
 import { UpdateEventDto } from 'src/common/dto/update-event.dto';
 import { error } from 'console';
+import { from } from 'rxjs';
 
 @Injectable()
 export class DatabaseService {
@@ -199,7 +200,7 @@ export class DatabaseService {
             }
                 
             const events = await model.find(filter)
-            .sort({fromDateTime:-1})
+            .sort({createdAt:-1, fromDateTime: -1})
             .skip(skip)
             .limit(limit)
             return events;

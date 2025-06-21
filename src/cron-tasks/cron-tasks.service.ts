@@ -45,6 +45,7 @@ export class CronTasksService {
         const mailArray = custProfiles.map(profile=>profile?.email);
         // const mailString = mailArray.map(String).join(',');
         // console.log("mailString",mailString);
+        this.mailGunService.pushMail(presenter?.email,subject,text);
         for(let mail of mailArray){
             this.mailGunService.pushMail(mail as string, subject, text);
         }

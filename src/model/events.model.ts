@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { INDUSTRY, SEGMENT } from "src/common/dto/add-event.dto";
 
 
-@Schema({ collection: "events" })
+@Schema({ collection: "events" ,timestamps: true})
 export class Events {
     @Prop({ required: true })
     _id: String;

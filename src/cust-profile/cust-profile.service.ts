@@ -52,7 +52,7 @@ export class CustProfileService {
 
     async createUser(createUserDto: CreateUserDto) {
         try {
-
+            const addedBy = createUserDto?.addedBy || httpContext.get("userId");
             const constPassword = createUserDto?.email.split("@")[0]
             const passwordHash = hashSHA(constPassword, SHA256_KEY)
             var dbPayload = {
@@ -219,7 +219,7 @@ export class CustProfileService {
             const workbook = xlsx.read(file.buffer, { type: 'buffer' });
             const userId  = httpContext.get("userId");
             const userProfile = await this.databaseService.getCustProfileUsingId(userId);
-            if(!userProfile || userProfile.role !== ROLES.ADMIN || userProfile.role !== ROLES.SUBADMIN){
+            if(userProfile.role ===  ROLES.STUDENT || userProfile.role === ROLES.PROFESSOR ){
                 throw new BadRequestException("You are not allowed to perform this operation");
             }
             // Get the first sheet name
