@@ -50,5 +50,8 @@ export class CreateUserDto{
     @IsOptional()
     addedBy: String;    
 
+    @IsOptional()
+    instituteRegistrationId: String
+
 
 }

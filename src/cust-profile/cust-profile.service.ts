@@ -78,6 +78,12 @@ export class CustProfileService {
             if(createUserDto?.currentCourse){
                 dbPayload["currentCourse"] =  createUserDto?.currentCourse
             }
+            if(createUserDto?.instituteRegistrationId){
+                dbPayload["instituteRegistrationId"] = createUserDto?.instituteRegistrationId   
+            }
+            if (addedBy) {
+                dbPayload["addedBy"] = addedBy;
+            }   
             await this.databaseService.createCustProfile(dbPayload);
             return {
                 "status": "Success"
@@ -254,6 +260,9 @@ export class CustProfileService {
                     }
                     if(obj["currentCourse"]){
                         createUserDto.currentCourse =  obj["currentCourse"]
+                    }
+                    if(obj["instituteRollNumber"]){
+                        createUserDto.instituteRegistrationId =  obj["instituteRollNumber"]
                     }
                     await this.createUser(createUserDto);
                 } catch (error) {

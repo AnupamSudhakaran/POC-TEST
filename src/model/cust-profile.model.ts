@@ -61,6 +61,9 @@ export class CustProfile{
 
     @Prop({required: false})
     addedBy: String;
+
+    @Prop({required: false})
+    instituteRegistrationId: String;
 }
 
 export type CustProfileDocument =  CustProfile & Document
