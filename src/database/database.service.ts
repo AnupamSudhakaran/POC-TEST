@@ -309,13 +309,35 @@ export class DatabaseService {
         try {
             const model = this.rwConnection.model("events");
             
-            const now = Date.now();
+            const now = Date.now()
             const fiveDaysLater = now + 5 * 24 * 60 * 60 * 1000; // 5 days in milliseconds
     
             const filter = {
                 fromDateTime: {
-                    $gte: now,
+                    $gte: now+ 4 * 24 * 60 * 60 * 1000,
                     $lt: fiveDaysLater
+                }
+            };
+    
+            console.log("Filter:", filter);
+            const events = await model.find(filter);
+            return events;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+        async getEventsForNextTwoDays() {
+        try {
+            const model = this.rwConnection.model("events");
+            
+            const now = Date.now()
+            const twoDaysLater = now + 2 * 24 * 60 * 60 * 1000; // 5 days in milliseconds
+    
+            const filter = {
+                fromDateTime: {
+                    $gte: now + 1 * 24 * 60 * 60 * 1000,
+                    $lt: twoDaysLater
                 }
             };
     
