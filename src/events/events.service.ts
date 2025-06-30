@@ -1,4 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { contains } from 'class-validator';
+import { emit } from 'process';
 import { AddEventDto } from 'src/common/dto/add-event.dto';
 import { AssosiateEventsDto } from 'src/common/dto/assosiate-events.dto';
 import { RatingDto } from 'src/common/dto/rating.dto';
@@ -243,9 +245,20 @@ export class EventsService {
             const attendees = await this.databaseService.getAllAttendeesForAnEvent(eventId);
             const attendeeIds = attendees.map((attendee) => attendee?.atendeeId);
             const custProfiles = await this.databaseService.getManyCustProfiles({_id:{$in:attendeeIds}});
-            return custProfiles;
+            const abstractedCustProfiles = custProfiles.map((custProfile) => this.returnAbstractCustProfile(custProfile));
+            return abstractedCustProfiles;
         } catch (error) {
             throw error;
+        }
+    }
+
+    private returnAbstractCustProfile(custProfile) {
+        return {
+            id : custProfile?._id,
+            name :custProfile?.name,
+            email: custProfile?.email,
+            role: custProfile?.role,    
+            cocontactNo: custProfile?.contactNo,
         }
     }
 }
