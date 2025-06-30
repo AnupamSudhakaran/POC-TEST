@@ -124,4 +124,12 @@ export class EventsController {
     async test() {
         return await this.eventsService.test();
     }
+
+    @Get("v1/attendees/:eventId")
+    async getAttendeesForAnEvent(@Param("eventId") eventId: String) {
+        if (!eventId) {
+            throw new BadRequestException("eventId missing")
+        }
+        return await this.eventsService.getAttendeesForAnEvent(eventId);
+    }   
 }

@@ -234,4 +234,18 @@ export class EventsService {
             throw error;
         }
     }
+
+    async getAttendeesForAnEvent(eventId: String) {
+        try {
+            if (!eventId) {
+                throw new BadRequestException("eventId missing")
+            }
+            const attendees = await this.databaseService.getAllAttendeesForAnEvent(eventId);
+            const attendeeIds = attendees.map((attendee) => attendee?.atendeeId);
+            const custProfiles = await this.databaseService.getManyCustProfiles({_id:{$in:attendeeIds}});
+            return custProfiles;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
