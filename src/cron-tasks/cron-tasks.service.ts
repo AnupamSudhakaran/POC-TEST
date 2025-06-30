@@ -18,23 +18,23 @@ export class CronTasksService {
         return events;
     }
 
-    @Cron("0 * * * *")
-    async runEmailCron5Days(){
-        const events = await this.databaseServive.getEventsForNextFiveDays();
-        for(var event of events){
-                this.processForanEvent(event);
-        }
-        return events;
-    }
+    // @Cron("0 * * * *")
+    // async runEmailCron5Days(){
+    //     const events = await this.databaseServive.getEventsForNextFiveDays();
+    //     for(var event of events){
+    //             this.processForanEvent(event);
+    //     }
+    //     return events;
+    // }
 
-    @Cron("0 * * * *")
-    async runEmailCron2Days(){
-        const events = await this.databaseServive.getEventsForNextTwoDays();
-        for(var event of events){
-                this.processForanEvent(event);
-        }
-        return events;
-    }
+    // @Cron("0 * * * *")
+    // async runEmailCron2Days(){
+    //     const events = await this.databaseServive.getEventsForNextTwoDays();
+    //     for(var event of events){
+    //             this.processForanEvent(event);
+    //     }
+    //     return events;
+    // }
 
     private async processForanEvent(event){
         const eventId = event?._id

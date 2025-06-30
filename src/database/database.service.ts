@@ -211,7 +211,14 @@ export class DatabaseService {
 
     async getPresentersFromDb(skip, limit,industry=null,segment=null) {
         try {
-            const filter = {role: ROLES.PROFESSOR}
+            let filter = {
+                role: ROLES.PROFESSOR,
+                introduction: { $exists: true },
+                $expr: {
+                    $gt: [{ $strLenCP: "$introduction" }, 100]
+                }
+            };
+
             if(industry){
                 filter["industry"] = industry;
             }
