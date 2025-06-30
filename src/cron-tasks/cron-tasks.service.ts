@@ -39,7 +39,7 @@ export class CronTasksService {
     private async processForanEvent(event){
         const eventId = event?._id
         const [attendeesForAnEvent, eventData] = await Promise.all( [this.databaseServive.getAllAttendeesForAnEvent(eventId), this.databaseServive.getEventsFromDB({_id:eventId})]);
-        const presenter = await this.databaseServive.getCustProfileUsingId(eventData?.presenterId);
+        const presenter = await this.databaseServive.getCustProfileUsingId(event?.presenterId);
         const subject = `TimeTappers.Com | Event Notification |Reminder to attend event ${eventData?.eventName}`;
         const text = `Decription :: ${eventData?.description}\n
                 Name :: ${eventData?.eventName}\n

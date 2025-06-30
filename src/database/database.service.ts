@@ -113,7 +113,7 @@ export class DatabaseService {
         try{
             console.log(`Trying to get events using filter :: ${JSON.stringify(filter)}`)
             const model = this.rwConnection.model("events");
-            return model.findOne(filter);
+            return await model.findOne(filter);
 
         }catch(err){
             console.log(`Got this error while trying to get event ::${JSON.stringify(err)}`)
