@@ -258,7 +258,7 @@ export class EventsService {
             name :custProfile?.name,
             email: custProfile?.email,
             role: custProfile?.role,    
-            cocontactNo: custProfile?.contactNo,
+            contactNo: custProfile?.contactNo,
         }
     }
 }
