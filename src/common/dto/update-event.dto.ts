@@ -56,10 +56,8 @@ export class UpdateEventDto{
     toDateTime:Date;
 
     @IsOptional()
-    @IsEnum(INDUSTRY)
-    industry: INDUSTRY
+    industry: string
 
     @IsOptional()
-    @IsEnum(SEGMENT)
-    segment: SEGMENT
+    segment: string
 }
