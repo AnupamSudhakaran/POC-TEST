@@ -31,6 +31,7 @@
     "crypto": "^1.0.1",
     "express-http-context": "^1.2.4",
     "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.6.0",
     "mongoose": "^8.8.2",
     "nest-cli": "^0.0.5",
     "nodemailer": "^6.9.16",

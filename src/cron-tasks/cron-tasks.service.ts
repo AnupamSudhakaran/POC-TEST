@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { DatabaseService } from 'src/database/database.service';
 import { MailGunService } from 'src/mail-gun/mail-gun.service';
+const moment = require('moment-timezone');
 
 @Injectable()
 export class CronTasksService {
@@ -41,12 +42,13 @@ export class CronTasksService {
         const [attendeesForAnEvent, eventData] = await Promise.all( [this.databaseServive.getAllAttendeesForAnEvent(eventId), this.databaseServive.getEventsFromDB({_id:eventId})]);
         const presenter = await this.databaseServive.getCustProfileUsingId(event?.presenterId);
         const subject = `TimeTappers.Com | Event Notification |Reminder to attend event ${eventData?.eventName}`;
+        const eventStartTime = moment(eventData?.fromDateTime).tz("Asia/Kolkata").format('DD-MM-YYYY HH:mm:ss');
         const text = `Decription :: ${eventData?.description}\n
                 Name :: ${eventData?.eventName}\n
-                starts At:: ${eventData?.fromDateTime}\n
+                Starts At:: ${eventStartTime}\n
                 Location :: ${eventData?.place}\n
-                Presented By :: ${presenter?.firstName} ${presenter?.lastName}\n
-                Presenter Description :: ${presenter?.description}\n
+                Presented By :: ${presenter?.name}\n
+                Presenter Description :: ${presenter?.introduction}\n
         `
         const custIds= attendeesForAnEvent.map(mapping=> mapping?.atendeeId)
         const filter = {_id:{$in:custIds}}

@@ -17,3 +17,8 @@ async function bootstrap() {
   await app.listen(port);
 }
 bootstrap();
+
+
+// app startup using pm2
+// pm2 start dist/main.js --name nest-app
+
