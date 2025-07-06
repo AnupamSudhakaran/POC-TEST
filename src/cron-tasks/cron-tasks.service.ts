@@ -19,6 +19,15 @@ export class CronTasksService {
         return events;
     }
 
+    @Cron('0 */4 * * *')
+    async runEmailCronFor4Hours(){
+        const events = await this.databaseServive.getEventsForNextFourHours();
+        for(var event of events){
+                this.processForanEvent(event);
+        }
+        return events;
+    }
+
     @Cron('0 10 * * *')
     async runEmailCron5Days(){
         const events = await this.databaseServive.getEventsForNextFiveDays();
@@ -49,6 +58,9 @@ export class CronTasksService {
                 Location :: ${eventData?.place}\n
                 Presented By :: ${presenter?.name}\n
                 Presenter Description :: ${presenter?.introduction}\n
+
+                Regards
+                Team TimeTappers.Com
         `
         const custIds= attendeesForAnEvent.map(mapping=> mapping?.atendeeId)
         const filter = {_id:{$in:custIds}}

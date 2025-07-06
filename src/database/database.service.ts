@@ -312,6 +312,24 @@ export class DatabaseService {
         }
     }
 
+
+        async getEventsForNextFourHours(){
+        try{
+            const model = this.rwConnection.model("events");
+            const filter = {
+                fromDateTime: {
+                    $gte: Date.now(),                      
+                    $lt: Date.now() + 4 * 60 * 60 * 1000 
+                }
+            };
+            console.log("df",filter);
+            const events = await model.find(filter);
+            return events;
+        }catch(err){
+            throw err;
+        }
+    }
+
     async getEventsForNextFiveDays() {
         try {
             const model = this.rwConnection.model("events");
