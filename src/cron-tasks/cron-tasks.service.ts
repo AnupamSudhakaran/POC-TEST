@@ -51,7 +51,9 @@ export class CronTasksService {
         const [attendeesForAnEvent, eventData] = await Promise.all( [this.databaseServive.getAllAttendeesForAnEvent(eventId), this.databaseServive.getEventsFromDB({_id:eventId})]);
         const presenter = await this.databaseServive.getCustProfileUsingId(event?.presenterId);
         const subject = `TimeTappers.Com | Event Notification |Reminder to attend event ${eventData?.eventName}`;
-        const eventStartTime = moment(eventData?.fromDateTime).tz("Asia/Kolkata").format('DD-MM-YYYY HH:mm:ss');
+        const eventStartTime = moment(eventData?.fromDateTime)
+            .tz("Asia/Kolkata")
+            .format('ddd, DD MMM YYYY, hh:mm A')
         const text = `Decription :: ${eventData?.description}\n
                 Name :: ${eventData?.eventName}\n
                 Starts At:: ${eventStartTime}\n
