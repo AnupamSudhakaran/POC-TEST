@@ -13,6 +13,7 @@ export class CronTasksService {
     @Cron("0 * * * *")
     async runEmailCron(){
         const events = await this.databaseServive.getEventsForNextHour();
+        console.log(`[runEmailCron1HR and events length is ${events.length}]`);
         for(var event of events){
                 this.processForanEvent(event);
         }
@@ -22,6 +23,7 @@ export class CronTasksService {
     @Cron('0 */4 * * *')
     async runEmailCronFor4Hours(){
         const events = await this.databaseServive.getEventsForNextFourHours();
+        console.log(`[runEmailCron4hrs and events length is ${events.length}]`);
         for(var event of events){
                 this.processForanEvent(event);
         }
@@ -31,6 +33,7 @@ export class CronTasksService {
     @Cron('0 10 * * *')
     async runEmailCron5Days(){
         const events = await this.databaseServive.getEventsForNextFiveDays();
+        console.log(`[runEmailCron5Days and events length is ${events.length}]`);
         for(var event of events){
                 this.processForanEvent(event);
         }
@@ -40,6 +43,7 @@ export class CronTasksService {
     @Cron('0 10 * * *')
     async runEmailCron2Days(){
         const events = await this.databaseServive.getEventsForNextTwoDays();
+        console.log(`[runEmailCron2Days and events length is ${events.length}]`);
         for(var event of events){
                 this.processForanEvent(event);
         }
